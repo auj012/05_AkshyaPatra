@@ -1,0 +1,63 @@
+name: 🚀 Auto-Generate Agile Workspace
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-structure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Repository Code
+        uses: actions/checkout@v4
+
+      - name: 📁 Generate Complete Modular Trilogy Layout
+        run: |
+          python -c "
+          import os
+          import shutil
+          import subprocess
+
+          # Hardcoded blueprint mapping for Akshya_patra folders and phase placeholders
+          trilogy_blueprint = [
+              '01_ideation/README.md',
+              '02_product_spec/README.md',
+              '03_architecture/README.md',
+              '04_project_mgmt/README.md',
+              '05_qa_evals/README.md',
+              'Phase1_Food_Intelligence/README.md',
+              'Phase2_Customer_Intelligence/README.md',
+              'Phase3_Abundance/README.md',
+              'rawdata/README.md',
+              'CHANGELOG.md'
+          ]
+
+          # Clear out any old target folders to guarantee an immaculate repo root
+          old_dirs = [
+              '01_ideation', '02_product_spec', '03_architecture', '04_project_mgmt', '05_qa_evals',
+              'Phase1_Food_Intelligence', 'Phase2_Customer_Intelligence', 'Phase3_Abundance', 'rawdata',
+              'phase1_divya_drishti', 'phase2_lakshman_rekha', 'phase3_sanjeevani'
+          ]
+          for old_dir in old_dirs:
+              if os.path.exists(old_dir):
+                  shutil.rmtree(old_dir)
+
+          # Rebuild using your exact 9 root-level folders
+          for filepath in trilogy_blueprint:
+              dirname = os.path.dirname(filepath)
+              if dirname:
+                  os.makedirs(dirname, exist_ok=True)
+              with open(filepath, 'w', encoding='utf-8') as f:
+                  f.write(f'# {dirname.replace(\"_\", \" \").title()}\\n\\nMaster placeholder documentation for Akshya Patra.\\n')
+              print(f'Generated trilogy structural asset: {filepath}')
+
+          # Commit changes directly back to your branch
+          subprocess.run(['git', 'config', 'user.name', 'github-actions[bot]'])
+          subprocess.run(['git', 'config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com'])
+          subprocess.run(['git', 'add', '.'])
+          subprocess.run(['git', 'commit', '-am', '🚀 built self-contained ecosystems for Akshya_patra modules', '--allow-empty'])
+          subprocess.run(['git', 'push'])
+          print('✅ Full Akshya_patra layout structured successfully!')
+          "
